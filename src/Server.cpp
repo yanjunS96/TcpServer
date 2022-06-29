@@ -11,20 +11,24 @@ using namespace SelfServer;
 #define SERINFOFILE "../config/ServerInfo.txt"
 
 #define READ_INT_NUM(read_file, read_cfg, dtr) \
-    std::string _str; \
-    std::getline(read_file,_str); /*后续改掉,不可之读取一行数据, 或者循环一行一行读取*/ \
-    auto found_start = _str.find_first_of(read_cfg); \
-    if(std::string::npos != found_start) \
-    { \
-        auto found_end = _str.find(']', found_start); \
-        if(std::string::npos != found_end) \
+    {                                          \
+        std::ostringstream _sin;\
+        std::string _str;                      \
+        _sin << read_file.rdbuf();    \
+        _str = _sin.str(); \
+        auto found_start = _str.find_first_of(read_cfg); \
+        if(std::string::npos != found_start) \
         { \
-            std::string tem = _str.substr(0, found_end - 1); \
-            std::string::size_type tem_start = tem.find_first_of(read_cfg); \
-            std::stringstream sst; \
-            sst << tem.substr(tem_start+sizeof(read_cfg)-1); \
-            sst >> dtr; \
-        } \
+            auto found_end = _str.find(']', found_start); \
+            if(std::string::npos != found_end) \
+            { \
+                std::string tem = _str.substr(0, found_end - 1); \
+                std::string::size_type tem_start = tem.find_first_of(read_cfg); \
+                std::stringstream sst; \
+                sst << tem.substr(tem_start+sizeof(read_cfg)-1); \
+                sst >> dtr; \
+            }                                      \
+        }\
     }
 
 
