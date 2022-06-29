@@ -23,6 +23,22 @@
 #include <memory>
 #include <mutex>
 
+#include <error.h>
+#include <string.h>
+
+/* 网络编程相关头文件 */
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/select.h>
+
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#include <fcntl.h>
+
 typedef int SocketFd;
+#define SELSOCK_OK 0
+#define SELSOCK_ERROR -1
+#define SELSOCK_TIMEOUT -2
 
 #endif //MYSERVER_COMMHEAD_H

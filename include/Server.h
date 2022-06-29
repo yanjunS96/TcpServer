@@ -15,12 +15,15 @@ namespace SelfServer{
         ~Server();
         void runStart();
     private:
-        void initServer();
+        int initServer();
     private:
         SocketFd m_fd;
+        SocketFd m_maxfd;
+        fd_set m_socSet;
         int m_port;
         std::unordered_map<int, ClientPtr> m_client;
         bool m_isSocket; /*用来判断服务器是否成功初始化 socket bind listen*/
+
     CREAT_SINGLE(Server)
     };
 }
