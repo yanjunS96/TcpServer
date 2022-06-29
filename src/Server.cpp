@@ -130,4 +130,5 @@ int Server::initServer()
         std::cout << "file open failed" << std::endl;
         return SELSOCK_ERROR;
     }
+    return SELSOCK_OK;
 }
