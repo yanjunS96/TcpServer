@@ -60,9 +60,10 @@ void Server::runStart() {
         }
     }
     //接受客户端链接, 并循环读取客户端发送过来的数据
-    std::thread(
+    /*std::thread(
             std::bind(&Server::runThread, this)
-            ).detach();
+            ).detach();*/
+    runThread(); //主线程阻塞
     return;
 }
 
@@ -78,6 +79,7 @@ void Server::runThread()
             std::cout << "select() returned with error:" << strerror(errno) << std::endl;
             continue;
         }
+        //如果存在新的客户端接入
         if (FD_ISSET(this->m_fd, &readSet))
         {
             struct sockaddr_in addr;
@@ -112,7 +114,7 @@ void Server::runThread()
                 continue;
         }
 
-        /* //遍历所有客户端 接收客户端数据 */
+        /* //遍历所有客户端 接收客户端数据 并将数据放在客户端 recvBUf */
         auto client_p = this->m_client.begin();
         /*for(int i = 0; i < CommServerInfo::s_usedCount;client_p++, i++)*/
         for(; client_p != this->m_client.end(); client_p++)
