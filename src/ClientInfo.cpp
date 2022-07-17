@@ -121,6 +121,9 @@ void ClientInfo::parseRecvBuff()
     //解析接受的数据, 进行数据交互
     while(this->m_isSock)
     {
+        //to be do
+        //1.解析数据 this->m_recvBuf
+        //2.将需要发给客户端的数据放在 this->p_sendBuf
         // 50 us 循环一次
         std::this_thread::sleep_for(std::chrono::microseconds(50));
     }
