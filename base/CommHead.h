@@ -19,10 +19,11 @@
 #include <set>
 #include <unordered_set>
 */
-
+#include <thread>
 #include <memory>
 #include <mutex>
 
-typedef int SocketFd;
+#include <error.h>
+#include <string.h>
 
 #endif //MYSERVER_COMMHEAD_H

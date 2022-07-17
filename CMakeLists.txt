@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(MyServer)
+project(TcpServer)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pmf-conversions -Wno-format -pthread")
@@ -9,7 +9,7 @@ include_directories(
         ./base
 )
 
-file(GLOB SOURCES ./*.cpp ./src/*.cpp)
+file(GLOB SOURCES ./*.cpp ./src/*.cpp ./base/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
