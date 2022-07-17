@@ -133,8 +133,8 @@ void Server::runThread()
                     break;
             }
         }
-        /*50ms循环一次*/
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        /*1ms循环一次*/
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     return;
 }

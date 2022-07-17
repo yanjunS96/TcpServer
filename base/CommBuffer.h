@@ -9,39 +9,60 @@
 #include <memory>
 #include <cstring>
 
-class CommBuffer {
+struct BuffData
+{
     using DataPtr=std::shared_ptr<char>;
+public:
+    BuffData():m_cursize(0), m_maxsize(0), pdata(nullptr){}
+    BuffData(int len):m_maxsize(len), m_cursize(0),pdata(new char[len]){}
+    //扩充构造
+    BuffData(int len, BuffData& val):m_maxsize(len), m_cursize(val.m_cursize),pdata(new char[len])
+    {
+        memmove(pdata.get(), val.pdata.get(), val.m_cursize);
+    }
+    ~BuffData(){}
+
+    BuffData& operator=(const BuffData & val)
+    {
+        this->pdata = val.pdata;
+        this->m_maxsize = val.m_maxsize;
+        this->m_cursize = val.m_cursize;
+        return *this;
+    }
+public:
+    DataPtr pdata;
+    int m_maxsize;
+    int m_cursize;
+};
+
+class CommBuffer {
 protected:
-    DataPtr p_data; /* 指向数据的指针 */
-    int m_size; /* 申请的空间的大小 */
-    int m_curlen; /* 当前已经使用的长度 */
+    BuffData m_data; /* 指向数据的指针 */
     int addVal(const char *pval,const int len)
     {
         if((nullptr == pval) || (0 >= len))
         {
             return -1;
         }
-        if(nullptr == this->p_data)
+        if(nullptr == this->m_data.pdata)
         {
-            this->m_size = (len << 1);
-            this->m_curlen = 0;
-            this->p_data = std::shared_ptr<char>(new char[this->m_size]); //申请两倍的空间
+            BuffData temData(len << 1);
+            this->m_data = temData;
         }
-        int freeSize = this->m_size - this->m_curlen;
+        int freeSize = this->m_data.m_maxsize - this->m_data.m_cursize;
         if(freeSize < len) // 剩余空间不足
         {
-            this->m_size = this->m_curlen + (len << 1); //保证还拥有一个 len长度的剩余空间
-            std::shared_ptr<char> tem_ptr(new char[this->m_size]);
-            memmove(tem_ptr.get(), this->p_data.get(), this->m_curlen);
-            this->p_data = tem_ptr;
+            int len = this->m_data.m_cursize + (len << 1);
+            BuffData temData(len, this->m_data);
+            this->m_data = temData;
         }
 
-        memmove(this->p_data.get() + this->m_curlen, pval, len);
-        this->m_curlen += len;
+        memmove(this->m_data.pdata.get() + this->m_data.m_cursize, pval, len);
+        this->m_data.m_cursize += len;
         return 0;
     }
 public:
-    CommBuffer():p_data(nullptr), m_size(0), m_curlen(0)
+    CommBuffer()
     {}
 
     virtual ~CommBuffer(){}

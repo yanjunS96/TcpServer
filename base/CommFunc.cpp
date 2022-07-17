@@ -242,7 +242,7 @@ void cycTryLock(std::mutex & val)
 {
     if(!val.try_lock())
     {
-        usleep(50);
+        usleep(5);
         cycTryLock(val);
     }
 }
