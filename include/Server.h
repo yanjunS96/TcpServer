@@ -4,7 +4,7 @@
 
 #ifndef MYSERVER_SERVER_H
 #define MYSERVER_SERVER_H
-#include "CommHead.h"
+
 #include "ClientInfo.h"
 #include "CommSingle.h"
 
@@ -15,6 +15,9 @@ namespace SelfServer{
         ~Server();
         void runStart();
     private:
+        void runThread();
+        void closeClient(ClientPtr);
+
         int initServer();
     private:
         SocketFd m_fd;

@@ -9,7 +9,7 @@ include_directories(
         ./base
 )
 
-file(GLOB SOURCES ./*.cpp ./src/*.cpp)
+file(GLOB SOURCES ./*.cpp ./src/*.cpp ./base/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
